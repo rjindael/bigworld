@@ -17,7 +17,10 @@ void processInput(GLFWwindow *window)
 {
     // FIXME: (&& !isJustAllBlack) is here solely b/c input is processed far too often
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS && !isJustAllBlack)
-        isJustAllBlack = !isJustAllBlack;
+    {
+        isJustAllBlack = true;
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    }
 }
 
 int main(int argc, char* argv[])
@@ -47,14 +50,10 @@ int main(int argc, char* argv[])
     glfwSetWindowSizeCallback(window, onResize);
 
     glViewport(0, 0, height, width);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
     while (!glfwWindowShouldClose(window))
     {
-        if (isJustAllBlack)
-            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        else
-            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
         glClear(GL_COLOR_BUFFER_BIT);
 
         processInput(window);
