@@ -21,6 +21,7 @@ Checklist of things I want to do of varying complexity, in no particular order:
 - [ ] Experiment with particles, soft particles, whatever else
 - [ ] Ambient occlusion with a fragment shader (SSAO/HBAO)
 - [ ] High refresh rate rendering
+- [ ] 3D Camera controls :D
 
 ## Resources
 
