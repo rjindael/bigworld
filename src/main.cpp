@@ -3,9 +3,21 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-void onFramebufferResize(GLFWwindow* window, int width, int height)
+int height = 800;
+int width = 600;
+
+bool isJustAllBlack = false;
+
+void onResize(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+}
+
+void processInput(GLFWwindow *window)
+{
+    // FIXME: (&& !isJustAllBlack) is here solely b/c input is processed far too often
+    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS && !isJustAllBlack)
+        isJustAllBlack = !isJustAllBlack;
 }
 
 int main(int argc, char* argv[])
@@ -32,12 +44,21 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    glViewport(0, 0, 800, 600);
+    glfwSetWindowSizeCallback(window, onResize);
 
-    glfwSetFramebufferSizeCallback(window, onFramebufferResize);
+    glViewport(0, 0, height, width);
 
     while (!glfwWindowShouldClose(window))
     {
+        if (isJustAllBlack)
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        else
+            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        processInput(window);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
