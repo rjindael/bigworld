@@ -27,8 +27,14 @@ Checklist of things I want to do of varying complexity, in no particular order:
 
 Some resources that I have found useful.
 
+**High level info:**
+
 - [LearnOpenGL](https://learnopengl.com)
 - [ogldev](https://ogldev.org)
+- [hello triangle by Anton Gerdelan](http://antongerdelan.net/opengl/hellotriangle.html)
+  - more: http://antongerdelan.net/opengl/vertexbuffers.html
+- [hello triangle by Alexander Overvoorde](https://open.gl/drawing)
+- [Debugging in OpenGL](https://learnopengl.com/In-Practice/Debugging)
 
 **Shadow volumes**:
 
