@@ -1,0 +1,8 @@
+{
+    "cmake.generator": "Ninja",
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE": "c:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+        "VCPKG_LIBRARY_LINKAGE": "static"
+    }
+}

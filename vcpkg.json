@@ -1,0 +1,10 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "builtin-baseline": "b0d9d516272c599145009c4c28b779a678fc97f8",
+    "name": "bigworld",
+    "version": "1.0.0",
+    "dependencies": [
+        "glad",
+        "glfw3"
+    ]
+}

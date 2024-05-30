@@ -4,7 +4,7 @@ This is just an application for me to tinker with OpenGL and get a fundamental g
 
 Checklist of things I want to do of varying complexity, in no particular order:
 
-- [ ] Get a basic GL app working (using glad+glfw)
+- [x] Get a basic GL app working (using glad+glfw)
 - [ ] Get basic 3D rendering working (using cglm)
 - [ ] Finish LearnOpenGL tutorial and whatever else
 - [ ] Mess with boolean operations for sculpting 3D meshes
