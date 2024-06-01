@@ -2,6 +2,8 @@
 
 This is just an application for me to tinker with OpenGL and get a fundamental grasp of how to perform 3D rendering for video games from C++. Thus, I am using C++ and am following [Learn OpenGL](https://learnopengl.com/) to learn OpenGL. This also is a means for me to explore C++ game development in general.
 
+Currently runs on Windows only. Builds with Clang 18.1 targeting x86_64-pc-windows-msvc.
+
 Checklist of things I want to do of varying complexity, in no particular order:
 
 - [x] Get a basic GL app working (using glad+glfw)
@@ -32,8 +34,7 @@ Some resources that I have found useful.
 - [LearnOpenGL](https://learnopengl.com)
 - [All LearnOpenGL C++ chapter examples](https://github.com/JoeyDeVries/LearnOpenGL/tree/master)
 - [ogldev](https://ogldev.org)
-- [hello triangle by Anton Gerdelan](http://antongerdelan.net/opengl/hellotriangle.html)
-  - more: http://antongerdelan.net/opengl/vertexbuffers.html
+- [hello triangle by Anton Gerdelan](http://antongerdelan.net/opengl/hellotriangle.html) [(more)](http://antongerdelan.net/opengl/vertexbuffers.html)
 - [hello triangle by Alexander Overvoorde](https://open.gl/drawing)
 - [Debugging in OpenGL](https://learnopengl.com/In-Practice/Debugging)
 
@@ -59,7 +60,7 @@ Some resources that I have found useful.
 **Shadow mapping**:
 
 - [LearnOpenGL explainer](https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping)
-- [Wikipedia page on it](https://en.wikipedia.org/wiki/Shadow_mapping) - see Priciple of ...
+- [Wikipedia page on it](https://en.wikipedia.org/wiki/Shadow_mapping) - see "Principle of a shadow and a shadow map"
 
 **Soft particles**:
 
@@ -72,7 +73,7 @@ Some resources that I have found useful.
 **Post Processing effects**:
 
 - [LearnOpenGL DoF](https://en.wikibooks.org/wiki/OpenGL_Programming/Depth_of_Field)
-- [LearnOpenGL Bloom](https://learnopengl.com/Advanced-Lighting/Bloom) - get highlighted frags, blur, composit :D
+- [LearnOpenGL Bloom](https://learnopengl.com/Advanced-Lighting/Bloom) - get highlighted frags, blur, composite :D
 
 ## License
 

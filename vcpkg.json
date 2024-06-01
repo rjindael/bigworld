@@ -4,6 +4,7 @@
     "name": "bigworld",
     "version": "1.0.0",
     "dependencies": [
+        "cxxopts",
         "glad",
         "sdl2"
     ]
