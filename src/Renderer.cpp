@@ -18,6 +18,8 @@ Renderer::Renderer(bigworld::Application* app) : app(app)
 
     glViewport(0, 0, app->height(), app->width());
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+    SDL_GL_SetSwapInterval(1);
 }
 
 Renderer::~Renderer()
