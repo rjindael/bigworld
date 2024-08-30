@@ -24,6 +24,8 @@ Checklist of things I want to do of varying complexity, in no particular order:
 - [ ] Ambient occlusion with a fragment shader (SSAO/HBAO)
 - [ ] High refresh rate rendering
 - [ ] 3D Camera controls :D
+- [ ] Physics with BulletPhysics
+- [ ] Libsm64 support
 
 ## Resources
 
