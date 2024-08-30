@@ -1,8 +1,11 @@
 #include "Application.hpp"
 
 #include <iostream>
-#include <Windows.h>
 #include <glad/glad.h>
+
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 
 namespace bigworld
 {
@@ -29,30 +32,35 @@ void Application::showMessage(std::string message, bool quiet, bool error)
 
     // hack: ideally, hwnd should be this->m_window hwnd if it exists, but it's too complicated to get hwnd
     // from sdl2 window, so it doesn't really matter (also this is static func anyway so)
+#ifdef _WIN32
     MessageBox(nullptr, message.c_str(), "bigworld", error ? MB_ICONERROR : MB_ICONINFORMATION);
+#else
+    std::cout << message << std::endl;
+#endif
 }
 
 // Called from the renderer to force a shutdown (independent of cleaning up GL context, which renderer handles itself)
-void Application::shutdown()
+void Application::shutdown(int statusCode)
 {
+    this->m_running = false;
+    this->m_statusCode = statusCode;
+
     SDL_DestroyWindow(this->window);
     SDL_Quit();
 }
 
 void Application::cleanup()
 {
+    this->m_running = false;
+
     if (this->renderer != nullptr)
     {
         this->renderer->shutdown();
-        delete this->renderer;
-        this->renderer = nullptr;
     }
 
     if (this->inputHandler != nullptr)
     {
         this->inputHandler->shutdown();
-        delete this->inputHandler;
-        this->inputHandler = nullptr;
     }
 
     if (this->window != nullptr)
@@ -78,11 +86,11 @@ void Application::run()
         return;
     }
 
-    this->m_running = true;
-    this->m_statusCode = 0;
-
     this->inputHandler = new InputHandler(this);
     this->renderer = new Renderer(this);
+
+    this->m_running = true;
+    this->m_statusCode = 0;
 
     while (this->m_running)
     {

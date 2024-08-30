@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL2/SDL.h>
+#include <iostream>
 
 namespace bigworld
 {
@@ -17,6 +19,8 @@ public:
 
 private:
     bigworld::Application* app;
+    SDL_GLContext glContext;
+    bool m_running;
 };
 
 } // namespace bigworld
