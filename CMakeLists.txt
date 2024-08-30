@@ -6,7 +6,7 @@ find_package(cxxopts CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 
-add_executable(bigworld WIN32
+set(SOURCES
     src/main.cpp
 
     # Core application
@@ -17,6 +17,12 @@ add_executable(bigworld WIN32
     src/InputHandler.cpp
     src/InputHandler.hpp
 )
+
+if(WIN32)
+    add_executable(bigworld WIN32 ${SOURCES} assets/bigworld.rc)
+else()
+    add_executable(bigworld ${SOURCES})
+endif()
 
 target_link_libraries(bigworld PRIVATE
     cxxopts::cxxopts
