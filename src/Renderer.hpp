@@ -21,6 +21,8 @@ private:
     bigworld::Application* app;
     SDL_GLContext glContext;
     bool m_running;
+    void compileShaders();
+    void drawTriangle();
 };
 
 } // namespace bigworld
