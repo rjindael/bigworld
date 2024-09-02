@@ -1,4 +1,4 @@
-#include "Application.hpp"
+#include "bigworld/Application.hpp"
 
 // these are strings because cxxopts sucks
 const char* kWidth = "800";
@@ -21,8 +21,8 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    bigworld::Application my_world(options.parse(argc, argv));
-    my_world.run();
+    bigworld::Application app(options.parse(argc, argv));
+    app.run();
 
-    return my_world.statusCode();
+    return app.statusCode();
 }

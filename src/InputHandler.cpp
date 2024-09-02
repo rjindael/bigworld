@@ -1,6 +1,7 @@
-#include "InputHandler.hpp"
+#include "bigworld/InputHandler.hpp"
+#include "bigworld/Application.hpp"
+
 #include <SDL2/SDL.h>
-#include "Application.hpp"
 
 namespace bigworld
 {

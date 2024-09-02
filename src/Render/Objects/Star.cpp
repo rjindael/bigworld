@@ -1,0 +1,1 @@
+#include "bigworld/Render/Objects/Star.hpp"

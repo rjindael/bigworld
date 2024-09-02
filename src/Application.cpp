@@ -1,4 +1,4 @@
-#include "Application.hpp"
+#include "bigworld/Application.hpp"
 
 #include <iostream>
 #include <glad/glad.h>
@@ -78,6 +78,7 @@ void Application::run()
     }
 
     this->window = SDL_CreateWindow("bigworld", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->m_width, this->m_height, SDL_WINDOW_OPENGL);
+    SDL_SetWindowResizable(window, SDL_TRUE);
 
     if (this->window == nullptr)
     {
@@ -92,8 +93,14 @@ void Application::run()
     this->m_running = true;
     this->m_statusCode = 0;
 
+    std::once_flag drawTriangleFlag;
+
     while (this->m_running)
     {
+        std::call_once(drawTriangleFlag, []() {
+            this->renderer->AddObject(new Triangle());
+        });
+
         this->inputHandler->processInputs();
         this->renderer->render();
     }

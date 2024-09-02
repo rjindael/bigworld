@@ -1,0 +1,1 @@
+#include "bigworld/Render/Objects/Triangle.hpp"

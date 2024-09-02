@@ -1,8 +1,10 @@
 # bigworld
 
-This is just an application for me to tinker with OpenGL and get a fundamental grasp of how to perform 3D rendering for video games from C++. Thus, I am using C++ and am following [Learn OpenGL](https://learnopengl.com/) to learn OpenGL. This also is a means for me to explore C++ game development in general.
+OpenGL experiments
 
-Currently runs on Windows only. Builds with Clang 18.1 targeting x86_64-pc-windows-msvc.
+This is just a means for me to tinker around with OpenGL and get a fundamental grasp of how to perform 3D rendering for video games from C++. In this journey, I am using C++ and am following the [Learn OpenGL](https://learnopengl.com/) tutorial to learn OpenGL.
+
+Currently tested to run on Windows only, but should compile and work for Linux (CI soon:tm:). Builds with Clang 18.1.1 targeting `x86_64-pc-windows-msvc`.
 
 Checklist of things I want to do of varying complexity, in no particular order:
 
@@ -25,7 +27,7 @@ Checklist of things I want to do of varying complexity, in no particular order:
 - [ ] High refresh rate rendering
 - [ ] 3D Camera controls :D
 - [ ] Physics with BulletPhysics
-- [ ] Libsm64 support
+- [ ] libsm64 support
 
 ## Resources
 
@@ -79,4 +81,11 @@ Some resources that I have found useful.
 
 ## License
 
-MIT license
+bigworld is licensed under the [MIT license](https://github.com/rjindael/bigworld/blob/trunk/LICENSE.md). A copy of it has been included with bigworld.
+
+bigworld uses the following third-party libraries:
+
+- [cxxopts](https://github.com/jarro2783/cxxopts), a header-only C++ argument parser library, licensed under the [MIT license](https://github.com/jarro2783/cxxopts/blob/master/LICENSE)
+- [glad](https://github.com/Dav1dde/glad), a header-only C++ OpenGL function loader library, licensed under the [MIT license](https://github.com/Dav1dde/glad/blob/master/LICENSE)
+- [SDL2](https://github.com/libsdl-org/SDL), a cross-platform development library, licensed under the [zlib license](https://github.com/libsdl-org/SDL/blob/main/COPYING.txt)
+- [irrKlang](https://www.ambiera.com/irrklang/), a C++ audio engine, licensed under the [irrKlang license](https://www.ambiera.com/irrklang/license.html)
