@@ -8,7 +8,7 @@ Currently tested to run on Windows only, but should compile and work for Linux (
 
 Checklist of things I want to do of varying complexity, in no particular order:
 
-- [x] Get a basic GL app working (using glad + SDL2)
+- [x] Get a basic GL app working (using SDL2)
 - [ ] Abstract a basic OpenGL rendering engine
 - [ ] Get basic 3D rendering working (using cglm)
 - [ ] Finish LearnOpenGL tutorial and whatever else
@@ -22,7 +22,7 @@ Checklist of things I want to do of varying complexity, in no particular order:
 - [ ] Have a nice shader development pipeline, since I realize shaders get more complex as visual effects become more varied
 - [ ] Eventually migrate over to SDL2 and start processing inputs from KB+M and a gamepad
 - [ ] Experiment with getting this on Linux and Android and WASM (GL ES)
-- [ ] Experiment with 3D audio with irrKlang
+- [ ] Experiment with 3D audio with SDL2 audio
 - [ ] Experiment with particles, soft particles, whatever else
 - [ ] Ambient occlusion with a fragment shader (SSAO/HBAO)
 - [ ] High refresh rate rendering
@@ -89,4 +89,3 @@ bigworld uses the following third-party libraries:
 - [cxxopts](https://github.com/jarro2783/cxxopts), a header-only C++ argument parser library, licensed under the [MIT license](https://github.com/jarro2783/cxxopts/blob/master/LICENSE)
 - [glad](https://github.com/Dav1dde/glad), a header-only C++ OpenGL function loader library, licensed under the [MIT license](https://github.com/Dav1dde/glad/blob/master/LICENSE)
 - [SDL2](https://github.com/libsdl-org/SDL), a cross-platform development library, licensed under the [zlib license](https://github.com/libsdl-org/SDL/blob/main/COPYING.txt)
-- [irrKlang](https://www.ambiera.com/irrklang/), a C++ audio engine, licensed under the [irrKlang license](https://www.ambiera.com/irrklang/license.html)

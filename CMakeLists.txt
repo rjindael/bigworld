@@ -6,8 +6,6 @@ find_package(cxxopts CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 
-include_directories(third-party/irrKlang/include)
-
 set(SOURCES
     src/main.cpp
     src/Application.cpp
@@ -29,39 +27,15 @@ set(SOURCES
 
 if(WIN32)
     add_executable(bigworld WIN32 ${SOURCES} assets/bigworld.rc)
-    link_directories(third-party/irrKlang/lib/win)
-
-    add_custom_command(TARGET bigworld POST_BUILD
-        COMMENT "Copying irrKlang binaries for Windows"
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            ${CMAKE_SOURCE_DIR}/third-party/irrKlang/bin/win/ikpMP3.dll
-            ${CMAKE_SOURCE_DIR}/third-party/irrKlang/bin/win/ikpFlac.dll
-            ${CMAKE_SOURCE_DIR}/third-party/irrKlang/bin/win/irrKlang.dll
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    )
 else()
     add_executable(bigworld ${SOURCES})
-    # what to link to on Linux??
-
-    add_custom_command(TARGET bigworld POST_BUILD
-        COMMENT "Copying irrKlang binaries for Linux"
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            ${CMAKE_SOURCE_DIR}/third-party/irrKlang/bin/linux/ikpMP3.so
-            ${CMAKE_SOURCE_DIR}/third-party/irrKlang/bin/linux/ikpFlac.so
-            ${CMAKE_SOURCE_DIR}/third-party/irrKlang/bin/linux/irrKlang.so
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    )
 endif()
 
-target_include_directories(bigworld PRIVATE
-    src/include
-    third-party/irrKlang/include
-)
+target_include_directories(bigworld PRIVATE src/include)
 
 target_link_libraries(bigworld PRIVATE
     cxxopts::cxxopts
     glad::glad
-    irrKlang
     SDL2::SDL2 SDL2::SDL2main
 )
 
