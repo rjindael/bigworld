@@ -9,7 +9,7 @@ Currently tested to run on Windows only, but should compile and work for Linux (
 Checklist of things I want to do of varying complexity, in no particular order:
 
 - [x] Get a basic GL app working (using SDL2)
-- [ ] Abstract a basic OpenGL rendering engine
+- [x] Abstract a basic OpenGL rendering engine
 - [ ] Get basic 3D rendering working (using cglm)
 - [ ] Finish LearnOpenGL tutorial and whatever else
 - [ ] Mess with boolean operations for sculpting 3D meshes
