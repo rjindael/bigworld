@@ -89,3 +89,4 @@ bigworld uses the following third-party libraries:
 - [cxxopts](https://github.com/jarro2783/cxxopts), a header-only C++ argument parser library, licensed under the [MIT license](https://github.com/jarro2783/cxxopts/blob/master/LICENSE)
 - [glad](https://github.com/Dav1dde/glad), a header-only C++ OpenGL function loader library, licensed under the [MIT license](https://github.com/Dav1dde/glad/blob/master/LICENSE)
 - [SDL2](https://github.com/libsdl-org/SDL), a cross-platform development library, licensed under the [zlib license](https://github.com/libsdl-org/SDL/blob/main/COPYING.txt)
+- [SDL2_mixer](https://github.com/libsdl-org/SDL_mixer), a cross-platform audio library, licensed under the [zlib license](https://github.com/libsdl-org/SDL_mixer/blob/main/COPYING.txt)

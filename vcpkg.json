@@ -6,6 +6,7 @@
     "dependencies": [
         "cxxopts",
         "glad",
-        "sdl2"
+        "sdl2",
+        "sdl2-mixer"
     ]
 }
