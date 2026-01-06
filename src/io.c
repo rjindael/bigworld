@@ -1,10 +1,10 @@
 #include "io.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
-int io_file_exists(const char* path)
+bool io_file_exists(const char* path)
 {
     return access(path, F_OK) == 0;
 }

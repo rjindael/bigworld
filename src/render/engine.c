@@ -1,12 +1,13 @@
 #include "render/engine.h"
-#include "io.h"
+#include "world/object.h"
+#include "world/scene.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-int render_init(Renderer* renderer, int width, int height, const char* title)
+bool render_init(Renderer* renderer, int width, int height, const char* title)
 {
     renderer->screen_width = width;
     renderer->screen_height = height;
@@ -14,7 +15,7 @@ int render_init(Renderer* renderer, int width, int height, const char* title)
     // Initialize SDL
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         fprintf(stderr, "Failed to initialize SDL: %s\n", SDL_GetError());
-        return 0;
+        return false;
     }
 
     // Set OpenGL attributes (core profile @ version 3.3)
@@ -30,7 +31,7 @@ int render_init(Renderer* renderer, int width, int height, const char* title)
     if (!renderer->window) {
         fprintf(stderr, "Failed to create window: %s\n", SDL_GetError());
         SDL_Quit();
-        return 0;
+        return false;
     }
 
     // Create SDL OpenGL context
@@ -39,7 +40,7 @@ int render_init(Renderer* renderer, int width, int height, const char* title)
         fprintf(stderr, "Failed to create OpenGL context: %s\n", SDL_GetError());
         SDL_DestroyWindow(renderer->window);
         SDL_Quit();
-        return 0;
+        return false;
     }
 
     // Make the GL context current
@@ -52,7 +53,7 @@ int render_init(Renderer* renderer, int width, int height, const char* title)
         SDL_GL_DestroyContext(renderer->gl_context);
         SDL_DestroyWindow(renderer->window);
         SDL_Quit();
-        return 0;
+        return false;
     }
 
     printf("OpenGL loaded successfully! OpenGL version: %d.%d\n", GLAD_VERSION_MAJOR(glad_version), GLAD_VERSION_MINOR(glad_version));
@@ -63,12 +64,6 @@ int render_init(Renderer* renderer, int width, int height, const char* title)
     printf("OpenGL Version: %s\n", glGetString(GL_VERSION));
     printf("GLSL Version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-    if (!render_upload_triangle(renderer)) {
-        fprintf(stderr, "Failed to upload triangle data\n");
-        render_shutdown(renderer);
-        return 0;
-    }
-
     // the triangle we created & uploaded will be drawn in the render loop (shambhala_update)
     // probably should abstract how objects are collated and drawn later
 
@@ -77,9 +72,6 @@ int render_init(Renderer* renderer, int width, int height, const char* title)
 
 void render_shutdown(Renderer* renderer)
 {
-    mesh_destroy(&renderer->triangle_mesh);
-    shader_destroy(&renderer->triangle_shader);
-
     if (renderer->gl_context) {
         SDL_GL_DestroyContext(renderer->gl_context);
     }
@@ -102,46 +94,14 @@ void render_present(Renderer* renderer)
     SDL_GL_SwapWindow(renderer->window);
 }
 
-// example of how we'd create a new obj for the renderer to draw
-int render_upload_triangle(Renderer* renderer)
+void render_draw(Renderer* renderer, struct Scene* scene)
 {
-    // first need to make it's shader
-    char* vertex_src = io_read_file("shaders/vert/tri.glsl");
-    char* fragment_src = io_read_file("shaders/frag/tri.glsl");
+    // currently we draw in the sense that use the shader and draw the mesh
+    for (size_t i = 0; i < scene->object_count; i++) {
+        Object* obj = &scene->objects[i];
 
-    if (!vertex_src || !fragment_src) {
-        fprintf(stderr, "Failed to load shader files\n");
-        free(vertex_src);
-        free(fragment_src);
-        return 0;
+        shader_use(&obj->shader);
+
+        mesh_draw(&obj->mesh);
     }
-
-    renderer->triangle_shader = shader_create(vertex_src, fragment_src);
-
-    free(vertex_src);
-    free(fragment_src);
-
-    if (renderer->triangle_shader.program_id == 0) {
-        fprintf(stderr, "Failed to create shader program\n");
-        return 0;
-    }
-
-    // then create the mesh
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f, // left
-        0.5f,  -0.5f, 0.0f, // right
-        0.0f,  0.5f,  0.0f // top
-    };
-
-    renderer->triangle_mesh = mesh_create(vertices, 9, NULL, 0);
-
-    return 1;
-}
-
-void render_draw_triangle(Renderer* renderer)
-{
-    shader_use(&renderer->triangle_shader);
-    mesh_draw(&renderer->triangle_mesh);
 }

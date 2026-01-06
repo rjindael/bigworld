@@ -10,8 +10,12 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    printf("Started Shambhala v%s!\n", VERSION);
+
     shambhala_run(&app);
     shambhala_shutdown(&app);
+
+    printf("Goodbye!\n");
 
     return 0;
 }

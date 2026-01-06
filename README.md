@@ -2,16 +2,16 @@
 
 Experimental 3D playground in pure C using OpenGL
 
-This is just a means for me to tinker around with OpenGL and get a fundamental grasp of how to perform 3D rendering for video games, and to learn C. I am following the [Learn OpenGL](https://learnopengl.com/) tutorial to learn OpenGL. Commitments:
+This is just a means for me to tinker around and get a fundamental grasp of how to perform 3D rendering for video games, and to learn C. I am following the [Learn OpenGL](https://learnopengl.com/) tutorial to learn OpenGL. Commitments:
 
 - Using SDL3: for input, window creation, audio, general loop
-- GLAD for GL wrangling
+- GLAD included for GL wrangling
 
 Checklist of things I want to do of varying complexity, in no particular order:
 
 - [x] Get a basic GL app working (using SDL3)
 - [x] Abstract a basic OpenGL rendering engine
-- [ ] Get basic 3D rendering working (using cglm)
+- [ ] Get basic 3D rendering working
 - [ ] Finish LearnOpenGL tutorial and whatever else
 - [ ] Mess with boolean operations for sculpting 3D meshes
 - [ ] Experiment with shaders

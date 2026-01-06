@@ -1,10 +1,11 @@
 #include "mesh.h"
+#include "gfx/vec3.h"
 #include <stdio.h>
 
-Mesh mesh_create(const float* vertices, int vertex_count, const unsigned int* indices, int index_count)
+Mesh mesh_create(const Vec3* vertices, int vertex_count, const unsigned int* indices, int index_count)
 {
     Mesh mesh = { 0 };
-    mesh.vertex_count = vertex_count;
+    mesh.vertex_count = vertex_count * 3; // each Vec3 has 3 floats
     mesh.index_count = index_count;
 
     // generate&bind VAO
@@ -14,11 +15,11 @@ Mesh mesh_create(const float* vertices, int vertex_count, const unsigned int* in
     // generate&bind VBO
     glGenBuffers(1, &mesh.vbo);
     glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
-    glBufferData(GL_ARRAY_BUFFER, vertex_count * sizeof(float), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertex_count * sizeof(Vec3), vertices, GL_STATIC_DRAW);
 
-    // setup vertex attributes (our positions are vec3s)
+    // setup vertex attributes (positions are vec3s)
     // REF: https://learnopengl.com/Getting-started/Hello-Triangle#:~:text=The%20function%20glVertexAttribPointer%20has%20quite%20a%20few%20parameters%20so%20let%27s%20carefully%20walk%20through%20them%3A
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vec3), (void*)0);
     glEnableVertexAttribArray(0);
 
     // generate&bind EBO if indices are provided

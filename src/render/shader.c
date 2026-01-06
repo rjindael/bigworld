@@ -64,7 +64,7 @@ Shader shader_create(const char* vertex_src, const char* fragment_src)
         return shader;
     }
 
-    shader.program_id = shader_link_program(vertex_shader, fragment_shader);
+    shader.id = shader_link_program(vertex_shader, fragment_shader);
 
     // delet shaders as they r now linked into the program
     glDeleteShader(vertex_shader);
@@ -76,20 +76,32 @@ Shader shader_create(const char* vertex_src, const char* fragment_src)
 // glDeleteProgram
 void shader_destroy(Shader* shader)
 {
-    if (shader->program_id != 0) {
-        glDeleteProgram(shader->program_id);
-        shader->program_id = 0;
+    if (shader->id != 0) {
+        glDeleteProgram(shader->id);
+        shader->id = 0;
     }
 }
 
 // glUseProgram
 void shader_use(const Shader* shader)
 {
-    glUseProgram(shader->program_id);
+    glUseProgram(shader->id);
 }
 
 // Returns the ID of the program for the given  shader
 GLuint shader_get_program(const Shader* shader)
 {
-    return shader->program_id;
+    return shader->id;
+}
+
+void shader_set_float(const Shader* shader, const char* name, float value)
+{
+    GLint location = glGetUniformLocation(shader->id, name);
+    glUniform1f(location, value);
+}
+
+void shader_set_vec3(const Shader* shader, const char* name, float x, float y, float z)
+{
+    GLint location = glGetUniformLocation(shader->id, name);
+    glUniform3f(location, x, y, z);
 }

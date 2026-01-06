@@ -12,16 +12,27 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 find_package(OpenGL REQUIRED)
-find_package(SDL3 CONFIG)
+find_package(SDL3 REQUIRED)
 
 set(SOURCES
     src/main.c
-    src/io.c
-    src/io.h
     src/shambhala.c
     src/shambhala.h
 
+    src/io.c
+    src/io.h
+    src/input.c
+    src/input.h
+
+    # Playground
+    src/world/scene.c
+    src/world/scene.h
+    src/world/object.c
+    src/world/object.h
+
     # Render engine
+    src/render/gfx/vec3.c
+    src/render/gfx/vec3.h
     src/render/engine.c
     src/render/engine.h
     src/render/shader.c
@@ -38,4 +49,4 @@ set(SOURCES
 add_executable(shambhala ${SOURCES})
 
 target_include_directories(shambhala PRIVATE src src/glad/include)
-target_link_libraries(shambhala PRIVATE SDL3::SDL3 OpenGL::GL)
+target_link_libraries(shambhala PRIVATE OpenGL::GL SDL3::SDL3 m)
