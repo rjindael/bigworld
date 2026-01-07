@@ -21,6 +21,7 @@ void render_shutdown(Renderer* renderer);
 
 ////////////////// OPERATIONS //////////////////
 
+void render_resize(Renderer* renderer, SDL_WindowEvent* event);
 void render_clear(Renderer* renderer, float r, float g, float b, float a, GLbitfield mask);
 void render_present(Renderer* renderer);
 

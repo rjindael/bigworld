@@ -83,6 +83,13 @@ void render_shutdown(Renderer* renderer)
     SDL_Quit();
 }
 
+void render_resize(Renderer* renderer, SDL_WindowEvent* event)
+{
+    renderer->screen_width = event->data1;
+    renderer->screen_height = event->data2;
+    glViewport(0, 0, renderer->screen_width, renderer->screen_height);
+}
+
 void render_clear(Renderer* renderer, float r, float g, float b, float a, GLbitfield mask)
 {
     glClearColor(r, g, b, a);
@@ -99,9 +106,7 @@ void render_draw(Renderer* renderer, struct Scene* scene)
     // currently we draw in the sense that use the shader and draw the mesh
     for (size_t i = 0; i < scene->object_count; i++) {
         Object* obj = &scene->objects[i];
-
         shader_use(&obj->shader);
-
         mesh_draw(&obj->mesh);
     }
 }

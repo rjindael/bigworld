@@ -33,9 +33,7 @@ void input_process(Shambhala* app)
             break;
 
         case SDL_EVENT_WINDOW_RESIZED:
-            app->renderer.screen_width = event.window.data1;
-            app->renderer.screen_height = event.window.data2;
-            glViewport(0, 0, app->renderer.screen_width, app->renderer.screen_height);
+            render_resize(&app->renderer, &event.window);
             break;
         }
     }
