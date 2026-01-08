@@ -1,16 +1,16 @@
 # shambhala
 
-Experimental 3D playground in pure C using OpenGL
+Experimental 3D playground in C using OpenGL
 
-This is just a means for me to tinker around and get a fundamental grasp of how to perform 3D rendering for video games, and to learn C. I am following the [Learn OpenGL](https://learnopengl.com/) tutorial to learn OpenGL. Commitments:
+Currently, Shambhala exists solely as a means for me to learn OpenGL (by following the [Learn OpenGL tutorial](https://learnopengl.com/) to spec) and 3D rendering overall, as well as more fundamental concepts of memory management by using C (high level assembler) instead of C++ (a high level language).
 
-- Using SDL3: for input, window creation, audio, general loop
-- GLAD included for GL wrangling
+Using only SDL3 (for window management & GL window management) and GLAD (to wrangle GL pointers) for now as external libraries. No plans to add any more external libraries in the future, as many only support C++.
 
 Checklist of things I want to do of varying complexity, in no particular order:
 
 - [x] Get a basic GL app working (using SDL3)
 - [x] Abstract a basic OpenGL rendering engine
+- [x] Abstract a basic world data model
 - [ ] Get basic 3D rendering working
 - [ ] Finish LearnOpenGL tutorial and whatever else
 - [ ] Mess with boolean operations for sculpting 3D meshes
@@ -62,6 +62,10 @@ Resources I have collected that I have found useful:
 - [StackOverflow thing on silhouette detection/edge detection with overlapping bodies](https://stackoverflow.com/questions/65010520/opengl-how-to-write-to-stencil-buffer-when-stencil-test-fails-and-depth-test-suc/65021525#65021525)
 - [Shadow volumes from dev fjord](https://dev-fjord.blogspot.com/2012/03/jogl-part-3-shadow-volumes.html)
 - [Ogre C++ impl.](https://github.com/OGRECave/ogre/blob/master/OgreMain/src/OgreShadowCaster.cpp)
+- [fastShadows by Morgan McGuire](https://cgvr.cs.uni-bremen.de/teaching/cg_literatur/fastShadows.pdf)
+- [OpenGL stencil talk](https://opengl.org/archives/resources/features/StencilTalk/)
+- [Half-Life stencil shadows](https://twhl.info/wiki/page/Tutorial%3A_Adding_hack-free_Stencil_Shadows_to_Half-Life)
+- [Guide to shadows by Josh Beam](https://joshbeam.com/articles/stenciled_shadow_volumes_in_opengl/)
 
 **Shadow mapping**:
 
@@ -83,4 +87,4 @@ Resources I have collected that I have found useful:
 
 ## License
 
-shambhala is licensed under the [MIT license](https://github.com/rjindael/shambhala/blob/trunk/LICENSE.md). A copy of it has been included with shambhala.
+shambhala is licensed under the [GPL v2.0](https://github.com/rjindael/shambhala/blob/trunk/LICENSE.md). A copy of it has been included with shambhala.
