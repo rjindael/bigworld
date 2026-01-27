@@ -1,52 +1,113 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 #include "shambhala.h"
+#include "render/engine.h"
+#include "world/scene.h"
 #include "input.h"
+#include "ui.h"
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <glad/gl.h>
 #include <SDL3/SDL.h>
 
-int shambhala_init(Shambhala* app, int width, int height, const char* title)
+int shambhala_init(sb_App* app, int width, int height, const char* title)
 {
-    app->running = false;
+    memset(app, 0, sizeof(sb_App));
+
+    app->running = 0;
 
     // This is needed for psuedorandom data
     srand(time(NULL));
 
-    if (!render_init(&app->renderer, width, height, title)) {
-        fprintf(stderr, "Failed to initialize renderer\n");
+    app->renderer = malloc(sizeof(sb_Renderer));
+    if (!app->renderer) {
+        fprintf(stderr, "Failed to allocate renderer\n");
         return 0;
     }
 
-    app->scene = scene_create();
-    app->running = true;
+    if (!render_init(app->renderer, width, height, title)) {
+        fprintf(stderr, "Failed to initialize renderer\n");
+        free(app->renderer);
+        return 0;
+    }
+
+    app->scene = malloc(sizeof(sb_Scene));
+    if (!app->scene) {
+        fprintf(stderr, "Failed to allocate scene\n");
+        render_shutdown(app->renderer);
+        free(app->renderer);
+        return 0;
+    }
+
+    *app->scene = scene_create();
+
+    app->ui = malloc(sizeof(sb_UI));
+    if (!app->ui) {
+        fprintf(stderr, "Failed to allocate UI\n");
+        scene_destroy(app->scene);
+        free(app->scene);
+        render_shutdown(app->renderer);
+        free(app->renderer);
+        return 0;
+    }
+
+    ui_init(app->ui);
+    app->running = 1;
 
     return 1;
 }
 
-void shambhala_shutdown(Shambhala* app)
+void shambhala_shutdown(sb_App* app)
 {
-    render_shutdown(&app->renderer);
-    scene_destroy(&app->scene);
+    if (app->ui) {
+        ui_shutdown(app->ui);
+        free(app->ui);
+        app->ui = NULL;
+    }
 
-    app->running = false;
+    if (app->renderer) {
+        render_shutdown(app->renderer);
+        free(app->renderer);
+        app->renderer = NULL;
+    }
+
+    if (app->scene) {
+        scene_destroy(app->scene);
+        free(app->scene);
+        app->scene = NULL;
+    }
+
+    app->running = 0;
 }
 
 // WHERE IT ALL HAPPENS!!!
-void shambhala_update(Shambhala* app)
+void shambhala_update(sb_App* app)
 {
+    // Begin UI frame
+    ui_begin(app->ui);
+
+    // Draw UI windows
+    ui_draw_demo_window(app->ui);
+    ui_draw_scene_window(app->ui, app->scene->object_count);
+
+    // End UI frame
+    ui_end(app->ui);
+
     // Clear screen first, update scene, and then draw the scene.
-    render_clear(&app->renderer, 1.0f, 1.0f, 1.0f, 1.0f, GL_COLOR_BUFFER_BIT);
-    scene_update(&app->scene);
-    render_draw(&app->renderer, &app->scene);
+    render_clear(app->renderer, 0.2f, 0.3f, 0.4f, 1.0f, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    scene_update(app->scene);
+    render_draw(app->renderer, app->scene);
 }
 
-void shambhala_render(Shambhala* app)
+void shambhala_render(sb_App* app)
 {
-    render_present(&app->renderer);
+    ui_render(app->ui);
+    render_present(app->renderer);
 }
 
-void shambhala_run(Shambhala* app)
+void shambhala_run(sb_App* app)
 {
     while (app->running) {
         // note that input can signal events to the scene itself

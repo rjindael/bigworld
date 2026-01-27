@@ -1,19 +1,19 @@
-#include "scene.h"
-#include "object.h"
+#include "world/scene.h"
+#include "world/object.h"
 #include "io.h"
 
 #include <string.h>
 #include <stdio.h>
 
-Scene scene_create()
+sb_Scene scene_create()
 {
-    Scene scene = { 0 };
+    sb_Scene scene = { 0 };
     scene.objects = NULL;
     scene.object_count = 0;
     return scene;
 }
 
-void scene_destroy(Scene* scene)
+void scene_destroy(sb_Scene* scene)
 {
     for (size_t i = 0; i < scene->object_count; i++) {
         object_destroy(&scene->objects[i]);
@@ -25,15 +25,15 @@ void scene_destroy(Scene* scene)
     scene->object_count = 0;
 }
 
-void scene_add_object(Scene* scene, const Object* object)
+void scene_add_object(sb_Scene* scene, const sb_Object* object)
 {
-    scene->objects = (Object*)realloc(scene->objects, sizeof(Object) * (scene->object_count + 1));
+    scene->objects = (sb_Object*)realloc(scene->objects, sizeof(sb_Object) * (scene->object_count + 1));
     scene->objects[scene->object_count] = *object;
     scene->objects[scene->object_count].scene = scene;
     scene->object_count++;
 }
 
-void scene_remove_object(Scene* scene, const char* id)
+void scene_remove_object(sb_Scene* scene, const char* id)
 {
     // lookup index by id
     // TODO: this could be implemented more efficiently with a hash map, but we don't expect many objects for now
@@ -45,7 +45,7 @@ void scene_remove_object(Scene* scene, const char* id)
     }
 }
 
-void _scene_remove_object(Scene* scene, size_t index)
+void _scene_remove_object(sb_Scene* scene, size_t index)
 {
     if (index >= scene->object_count) {
         return; // invalid index
@@ -56,10 +56,10 @@ void _scene_remove_object(Scene* scene, size_t index)
     }
 
     scene->object_count--;
-    scene->objects = (Object*)realloc(scene->objects, sizeof(Object) * scene->object_count);
+    scene->objects = (sb_Object*)realloc(scene->objects, sizeof(sb_Object) * scene->object_count);
 }
 
-void scene_update(Scene* scene)
+void scene_update(sb_Scene* scene)
 {
     // process all objects in the scene
     for (size_t i = 0; i < scene->object_count; i++) {
@@ -67,7 +67,7 @@ void scene_update(Scene* scene)
     }
 }
 
-bool _DBG_scene_make_tri(Scene* scene)
+int _DBG_scene_make_tri(sb_Scene* scene)
 {
     // first need to make it's shader
     char* vertex_src = io_read_file("shaders/vert/tri.glsl");
@@ -77,49 +77,49 @@ bool _DBG_scene_make_tri(Scene* scene)
         fprintf(stderr, "Failed to load shader files\n");
         free(vertex_src);
         free(fragment_src);
-        return false;
+        return 0;
     }
 
-    Shader program = shader_create(vertex_src, fragment_src);
+    sb_Shader program = shader_create(vertex_src, fragment_src);
 
     free(vertex_src);
     free(fragment_src);
 
     if (program.id == 0) {
         fprintf(stderr, "Failed to create shader program\n");
-        return false;
+        return 0;
     }
 
     // then create the mesh
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
-    Vec3 vertices[] = {
-        { -0.5f, 0.5f, 0.0f }, // left
-        { 0.5f, 0.5f, 0.0f }, // right
-        { 0.0f, -0.5f, 0.0f } // bottom
+    mfloat_t vertices[] = {
+        -0.5f, 0.5f, 0.0f,  // left
+        0.5f, 0.5f, 0.0f,   // right
+        0.0f, -0.5f, 0.0f   // bottom
     };
 
-    Mesh mesh = mesh_create(vertices, 3, NULL, 0);
+    sb_Mesh mesh = mesh_create(vertices, 3, NULL, 0);
 
     // and now, create the object
-    Vec3 position = { 0.0f, 0.0f, 0.0f };
-    Vec3 rotation = { 0.0f, 0.0f, 0.0f };
-    Vec3 scale = { 1.0f, 1.0f, 1.0f };
-    Object obj = object_create(&mesh, &program, &position, &rotation, &scale);
+    struct vec3 position = { 0.0f, 0.0f, 0.0f };
+    struct vec3 rotation = { 0.0f, 0.0f, 0.0f };
+    struct vec3 scale = { 1.0f, 1.0f, 1.0f };
+    sb_Object obj = object_create(&mesh, &program, &position, &rotation, &scale);
 
     // add it to the scene
     scene_add_object(scene, &obj);
 
-    return true;
+    return 1;
 }
 
-bool _DBG_scene_make_tri_spin(Scene* scene)
+int _DBG_scene_make_tri_spin(sb_Scene* scene)
 {
     if (scene->object_count != 1) {
-        return false;
+        return 0;
     }
 
     scene->objects[0]._DBG_spinning = !scene->objects[0]._DBG_spinning;
 
-    return true;
+    return 1;
 }

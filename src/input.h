@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 #ifndef INPUT_H
 #define INPUT_H
 
@@ -5,6 +6,6 @@
 
 ////////////////// OPERATIONS //////////////////
 
-void input_process(Shambhala* app);
+void input_process(sb_App* app);
 
 #endif // INPUT_H

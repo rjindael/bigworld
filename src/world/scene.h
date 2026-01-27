@@ -1,34 +1,34 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "object.h"
-
 #include <stdlib.h>
 
-typedef struct Scene {
-    Object* objects;
+typedef struct sb_Object sb_Object;
+
+typedef struct sb_Scene {
+    sb_Object* objects;
     size_t object_count;
-} Scene;
+} sb_Scene;
 
 ////////////////// LIFECYCLE //////////////////
 
-Scene scene_create();
-void scene_destroy(Scene* scene);
-void scene_update(Scene* scene);
+sb_Scene scene_create(void);
+void scene_destroy(sb_Scene* scene);
+void scene_update(sb_Scene* scene);
 
 ////////////////// OPERATIONS //////////////////
 
-void scene_add_object(Scene* scene, const Object* object);
-void scene_remove_object(Scene* scene, const char* id);
+void scene_add_object(sb_Scene* scene, const sb_Object* object);
+void scene_remove_object(sb_Scene* scene, const char* id);
 
 // Internally used by scene_remove_object
 // Call scene_remove_object instead, to reference by ID
-void _scene_remove_object(Scene* scene, size_t index);
+void _scene_remove_object(sb_Scene* scene, size_t index);
 
 // For debugging
 // Internally, creates objects, adds to scene, and modifies them (which then gets processed each time the object then wil update)
 // Called by input
-bool _DBG_scene_make_tri(Scene* scene);
-bool _DBG_scene_make_tri_spin(Scene* scene);
+int _DBG_scene_make_tri(sb_Scene* scene);
+int _DBG_scene_make_tri_spin(sb_Scene* scene);
 
 #endif // SCENE_H

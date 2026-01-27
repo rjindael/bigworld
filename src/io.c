@@ -1,10 +1,11 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
 #include "io.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-bool io_file_exists(const char* path)
+int io_file_exists(const char* path)
 {
     return access(path, F_OK) == 0;
 }

@@ -1,12 +1,12 @@
-#include "object.h"
-#include "scene.h"
+#include "world/object.h"
+#include "world/scene.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-Object object_create(const Mesh* mesh, const Shader* shader, const Vec3* position, const Vec3* rotation, const Vec3* scale)
+sb_Object object_create(const sb_Mesh* mesh, const sb_Shader* shader, const struct vec3* position, const struct vec3* rotation, const struct vec3* scale)
 {
-    Object object = { 0 };
+    sb_Object object = { 0 };
     object.mesh = *mesh;
     object.shader = *shader;
     object.position = *position;
@@ -30,29 +30,29 @@ Object object_create(const Mesh* mesh, const Shader* shader, const Vec3* positio
     return object;
 }
 
-void object_destroy(Object* object)
+void object_destroy(sb_Object* object)
 {
     scene_remove_object(object->scene, object->id);
     mesh_destroy(&object->mesh);
     shader_destroy(&object->shader);
 }
 
-void object_set_position(Object* object, const Vec3* position)
+void object_set_position(sb_Object* object, const struct vec3* position)
 {
     object->position = *position;
 }
 
-void object_set_rotation(Object* object, const Vec3* rotation)
+void object_set_rotation(sb_Object* object, const struct vec3* rotation)
 {
     object->rotation = *rotation;
 }
 
-void object_set_scale(Object* object, const Vec3* scale)
+void object_set_scale(sb_Object* object, const struct vec3* scale)
 {
     object->scale = *scale;
 }
 
-void object_update(Object* object)
+void object_update(sb_Object* object)
 {
     if (object->_DBG_spinning) {
         object->rotation.y += 1.0f;

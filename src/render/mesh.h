@@ -2,7 +2,8 @@
 #define MESH_H
 
 #include <glad/gl.h>
-#include "gfx/vec3.h"
+#include <mathc.h>
+#include <stdint.h>
 
 // Simple mesh that can hold vertex data
 
@@ -10,19 +11,19 @@ typedef struct {
     GLuint vao;
     GLuint vbo;
     GLuint ebo;
-    int vertex_count;
-    int index_count;
-} Mesh;
+    uint16_t vertex_count;
+    uint16_t index_count;
+} sb_Mesh;
 
 ////////////////// LIFECYCLE //////////////////
 
-Mesh mesh_create(const Vec3* vertices, int vertex_count, const unsigned int* indices, int index_count);
-void mesh_destroy(Mesh* mesh);
+sb_Mesh mesh_create(mfloat_t* vertices, uint16_t vertex_count, const uint16_t* indices, uint16_t index_count);
+void mesh_destroy(sb_Mesh* mesh);
 
 ////////////////// OPERATIONS //////////////////
 
-void mesh_bind(const Mesh* mesh);
+void mesh_bind(const sb_Mesh* mesh);
 void mesh_unbind(void);
-void mesh_draw(const Mesh* mesh);
+void mesh_draw(const sb_Mesh* mesh);
 
 #endif // MESH_H

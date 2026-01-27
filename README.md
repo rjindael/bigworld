@@ -1,16 +1,15 @@
 # shambhala
 
-Experimental 3D playground in C using OpenGL
+Experimental OpenGL 3D playground in ANSI C
 
-Currently, Shambhala exists solely as a means for me to learn OpenGL (by following the [Learn OpenGL tutorial](https://learnopengl.com/) to spec) and 3D rendering overall, as well as more fundamental concepts of memory management by using C (high level assembler) instead of C++ (a high level language).
-
-Using only SDL3 (for window management & GL window management) and GLAD (to wrangle GL pointers) for now as external libraries. No plans to add any more external libraries in the future, as many only support C++.
+This exists solely as a means for me to learn OpenGL (by following the [Learn OpenGL tutorial](https://learnopengl.com/) to spec) and 3D rendering overall, as well as a general collation of more fundamental computer science concepts, in particular memory management by using C (high level assembler) instead of C++ (a high level language).
 
 Checklist of things I want to do of varying complexity, in no particular order:
 
 - [x] Get a basic GL app working (using SDL3)
 - [x] Abstract a basic OpenGL rendering engine
 - [x] Abstract a basic world data model
+- [x] Get a basic UI working
 - [ ] Get basic 3D rendering working
 - [ ] Finish LearnOpenGL tutorial and whatever else
 - [ ] Mess with boolean operations for sculpting 3D meshes
@@ -31,6 +30,19 @@ Checklist of things I want to do of varying complexity, in no particular order:
 - [ ] Basic physics with BulletPhysics
 - [ ] libsm64 support
 
+## Build
+
+Currently, these are the only dependencies:
+
+- [mathc](https://github.com/felselva/mathc) for all 3D/2D math
+- [SDL3](https://libsdl.org/) (for window/input management)
+- [GLAD](https://gen.glad.sh/) (to point GL funcs)
+- [microui](https://github.com/rxi/microui) for all UI
+
+No plans to add any more external libraries in the future, as many only support C++.
+
+shambhala uses GNU Make as its build system. You can build and run shambhala with `make run`.
+
 ## Resources
 
 Resources I have collected that I have found useful:
@@ -40,7 +52,7 @@ Resources I have collected that I have found useful:
 - [LearnOpenGL](https://learnopengl.com)
 - [All LearnOpenGL C++ chapter examples](https://github.com/JoeyDeVries/LearnOpenGL/tree/master)
 - [ogldev](https://ogldev.org)
-- [hello triangle by Anton Gerdelan](http://antongerdelan.net/opengl/hellotriangle.html) [(more)](http://antongerdelan.net/opengl/vertexbuffers.html)
+- [hello triangle by Anton Gerdelan](http://antongerdelan.net/opengl/hellotriangle.html) [(more on vertex buffers)](http://antongerdelan.net/opengl/vertexbuffers.html)
 - [hello triangle by Alexander Overvoorde](https://open.gl/drawing)
 - [Debugging in OpenGL](https://learnopengl.com/In-Practice/Debugging)
 
@@ -70,7 +82,7 @@ Resources I have collected that I have found useful:
 **Shadow mapping**:
 
 - [LearnOpenGL explainer](https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping)
-- [Wikipedia page on it](https://en.wikipedia.org/wiki/Shadow_mapping) - see "Principle of a shadow and a shadow map"
+- [Wikipedia page on it](https://en.wikipedia.org/wiki/Shadow_mapping) - see ["Principle of a shadow and a shadow map"](https://en.wikipedia.org/wiki/Shadow_mapping#Principle_of_a_shadow_and_a_shadow_map)
 
 **Soft particles**:
 

@@ -49,9 +49,9 @@ GLuint shader_link_program(GLuint vertex_shader, GLuint fragment_shader)
 }
 
 // Compiles & links a shader
-Shader shader_create(const char* vertex_src, const char* fragment_src)
+sb_Shader shader_create(const char* vertex_src, const char* fragment_src)
 {
-    Shader shader = { 0 };
+    sb_Shader shader = { 0 };
 
     GLuint vertex_shader = shader_compile(vertex_src, GL_VERTEX_SHADER);
     if (vertex_shader == 0) {
@@ -74,7 +74,7 @@ Shader shader_create(const char* vertex_src, const char* fragment_src)
 }
 
 // glDeleteProgram
-void shader_destroy(Shader* shader)
+void shader_destroy(sb_Shader* shader)
 {
     if (shader->id != 0) {
         glDeleteProgram(shader->id);
@@ -83,24 +83,24 @@ void shader_destroy(Shader* shader)
 }
 
 // glUseProgram
-void shader_use(const Shader* shader)
+void shader_use(const sb_Shader* shader)
 {
     glUseProgram(shader->id);
 }
 
 // Returns the ID of the program for the given  shader
-GLuint shader_get_program(const Shader* shader)
+GLuint shader_get_program(const sb_Shader* shader)
 {
     return shader->id;
 }
 
-void shader_set_float(const Shader* shader, const char* name, float value)
+void shader_set_float(const sb_Shader* shader, const char* name, float value)
 {
     GLint location = glGetUniformLocation(shader->id, name);
     glUniform1f(location, value);
 }
 
-void shader_set_vec3(const Shader* shader, const char* name, float x, float y, float z)
+void shader_set_vec3(const sb_Shader* shader, const char* name, float x, float y, float z)
 {
     GLint location = glGetUniformLocation(shader->id, name);
     glUniform3f(location, x, y, z);
