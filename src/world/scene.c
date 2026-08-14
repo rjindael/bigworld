@@ -1,15 +1,17 @@
 #include "world/scene.h"
 #include "world/object.h"
+#include "render/engine.h"
 #include "io.h"
 
 #include <string.h>
 #include <stdio.h>
 
-sb_Scene scene_create()
+sb_Scene scene_create(sb_Renderer* renderer)
 {
     sb_Scene scene = { 0 };
     scene.objects = NULL;
     scene.object_count = 0;
+    scene.renderer = renderer;
     return scene;
 }
 
@@ -70,8 +72,8 @@ void scene_update(sb_Scene* scene)
 int _DBG_scene_make_tri(sb_Scene* scene)
 {
     // first need to make it's shader
-    char* vertex_src = io_read_file("shaders/vert/tri.glsl");
-    char* fragment_src = io_read_file("shaders/frag/tri.glsl");
+    char* vertex_src = io_read_file("shaders/vert/tri.wgsl");
+    char* fragment_src = io_read_file("shaders/frag/tri.wgsl");
 
     if (!vertex_src || !fragment_src) {
         fprintf(stderr, "Failed to load shader files\n");
@@ -80,12 +82,13 @@ int _DBG_scene_make_tri(sb_Scene* scene)
         return 0;
     }
 
-    sb_Shader program = shader_create(vertex_src, fragment_src);
+    sb_Renderer* renderer = scene->renderer;
+    sb_Shader program = shader_create(renderer->device, renderer->queue, renderer->surface_format, vertex_src, fragment_src);
 
     free(vertex_src);
     free(fragment_src);
 
-    if (program.id == 0) {
+    if (program.pipeline == NULL) {
         fprintf(stderr, "Failed to create shader program\n");
         return 0;
     }
@@ -99,7 +102,7 @@ int _DBG_scene_make_tri(sb_Scene* scene)
         0.0f, -0.5f, 0.0f   // bottom
     };
 
-    sb_Mesh mesh = mesh_create(vertices, 3, NULL, 0);
+    sb_Mesh mesh = mesh_create(renderer->device, renderer->queue, vertices, 3, NULL, 0);
 
     // and now, create the object
     struct vec3 position = { 0.0f, 0.0f, 0.0f };

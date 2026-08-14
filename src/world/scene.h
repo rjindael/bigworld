@@ -4,15 +4,17 @@
 #include <stdlib.h>
 
 typedef struct sb_Object sb_Object;
+typedef struct sb_Renderer sb_Renderer;
 
 typedef struct sb_Scene {
     sb_Object* objects;
     size_t object_count;
+    sb_Renderer* renderer; // used to create GPU resources for debug/dynamically-added objects
 } sb_Scene;
 
 ////////////////// LIFECYCLE //////////////////
 
-sb_Scene scene_create(void);
+sb_Scene scene_create(sb_Renderer* renderer);
 void scene_destroy(sb_Scene* scene);
 void scene_update(sb_Scene* scene);
 

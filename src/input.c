@@ -66,6 +66,9 @@ void input_process(sb_App* app)
 
         case SDL_EVENT_WINDOW_RESIZED:
             render_resize(app->renderer, &event.window);
+
+            shambhala_update(app);
+            shambhala_render(app);
             break;
         }
     }

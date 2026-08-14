@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <glad/gl.h>
 #include <SDL3/SDL.h>
 
 int shambhala_init(sb_App* app, int width, int height, const char* title)
@@ -41,7 +40,7 @@ int shambhala_init(sb_App* app, int width, int height, const char* title)
         return 0;
     }
 
-    *app->scene = scene_create();
+    *app->scene = scene_create(app->renderer);
 
     app->ui = malloc(sizeof(sb_UI));
     if (!app->ui) {
@@ -96,14 +95,14 @@ void shambhala_update(sb_App* app)
     ui_end(app->ui);
 
     // Clear screen first, update scene, and then draw the scene.
-    render_clear(app->renderer, 0.2f, 0.3f, 0.4f, 1.0f, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    render_begin_frame(app->renderer, 0.2f, 0.3f, 0.4f, 1.0f);
     scene_update(app->scene);
     render_draw(app->renderer, app->scene);
 }
 
 void shambhala_render(sb_App* app)
 {
-    ui_render(app->ui);
+    ui_render(app->ui, app->renderer);
     render_present(app->renderer);
 }
 

@@ -1,87 +1,79 @@
 #include "mesh.h"
-#include <stdio.h>
 
-sb_Mesh mesh_create(mfloat_t* vertices, uint16_t vertex_count, const uint16_t* indices, uint16_t index_count)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+static uint64_t align4(uint64_t size)
+{
+    return (size + 3) & ~(uint64_t)3;
+}
+
+sb_Mesh mesh_create(WGPUDevice device, WGPUQueue queue, mfloat_t* vertices, uint16_t vertex_count, const uint16_t* indices, uint16_t index_count)
 {
     sb_Mesh mesh = { 0 };
     mesh.vertex_count = vertex_count;
     mesh.index_count = index_count;
 
-    // generate&bind VAO
-    glGenVertexArrays(1, &mesh.vao);
-    glBindVertexArray(mesh.vao);
+    // 3 floats/vertex is always a multiple of 4 bytes    uint64_t vertex_bytes = (uint64_t)vertex_count * 3 * sizeof(mfloat_t);
 
-    // generate&bind VBO
-    glGenBuffers(1, &mesh.vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
-    glBufferData(GL_ARRAY_BUFFER, vertex_count * 3 * sizeof(mfloat_t), vertices, GL_STATIC_DRAW);
+    WGPUBufferDescriptor vertex_desc = { 0 };
+    vertex_desc.usage = WGPUBufferUsage_Vertex | WGPUBufferUsage_CopyDst;
+    vertex_desc.size = vertex_bytes;
 
-    // setup vertex attributes (positions are vec3s)
-    // REF: https://learnopengl.com/Getting-started/Hello-Triangle#:~:text=The%20function%20glVertexAttribPointer%20has%20quite%20a%20few%20parameters%20so%20let%27s%20carefully%20walk%20through%20them%3A
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(mfloat_t), (void*)0);
-    glEnableVertexAttribArray(0);
+    mesh.vertex_buffer = wgpuDeviceCreateBuffer(device, &vertex_desc);
+    wgpuQueueWriteBuffer(queue, mesh.vertex_buffer, 0, vertices, vertex_bytes);
 
-    // generate&bind EBO if indices are provided
     if (indices != NULL && index_count > 0) {
-        glGenBuffers(1, &mesh.ebo);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ebo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_count * sizeof(uint16_t), indices, GL_STATIC_DRAW);
-    }
+        uint64_t index_bytes = (uint64_t)index_count * sizeof(uint16_t);
+        uint64_t padded_bytes = align4(index_bytes);
 
-    // unbind (by binding to null aka 0)
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+        WGPUBufferDescriptor index_desc = { 0 };
+        index_desc.usage = WGPUBufferUsage_Index | WGPUBufferUsage_CopyDst;
+        index_desc.size = padded_bytes;
+
+        mesh.index_buffer = wgpuDeviceCreateBuffer(device, &index_desc);
+
+        if (padded_bytes == index_bytes) {
+            wgpuQueueWriteBuffer(queue, mesh.index_buffer, 0, indices, index_bytes);
+        } else {
+            // wgpuQueueWriteBuffer requires a write size that's a multiple of 4
+            uint8_t* padded = (uint8_t*)calloc(1, padded_bytes);
+            memcpy(padded, indices, index_bytes);
+            wgpuQueueWriteBuffer(queue, mesh.index_buffer, 0, padded, padded_bytes);
+            free(padded);
+        }
+    }
 
     return mesh;
 }
 
 void mesh_destroy(sb_Mesh* mesh)
 {
-    // element buffer
-    if (mesh->ebo != 0) {
-        glDeleteBuffers(1, &mesh->ebo);
-        mesh->ebo = 0;
+    if (mesh->index_buffer) {
+        wgpuBufferRelease(mesh->index_buffer);
+        mesh->index_buffer = NULL;
     }
 
-    // vertex buffer
-    if (mesh->vbo != 0) {
-        glDeleteBuffers(1, &mesh->vbo);
-        mesh->vbo = 0;
+    if (mesh->vertex_buffer) {
+        wgpuBufferRelease(mesh->vertex_buffer);
+        mesh->vertex_buffer = NULL;
     }
 
-    // vertex array
-    if (mesh->vao != 0) {
-        glDeleteVertexArrays(1, &mesh->vao);
-        mesh->vao = 0;
-    }
-
-    // reset counts
     mesh->vertex_count = 0;
     mesh->index_count = 0;
 }
 
-// glBindVertexArray (to the mesh's VAO)
-void mesh_bind(const sb_Mesh* mesh)
+void mesh_draw(const sb_Mesh* mesh, WGPURenderPassEncoder pass)
 {
-    glBindVertexArray(mesh->vao);
-}
-
-// glBindVertexArray to nothing
-void mesh_unbind(void)
-{
-    glBindVertexArray(0);
-}
-
-// bind it, draw it, unbind it
-void mesh_draw(const sb_Mesh* mesh)
-{
-    mesh_bind(mesh);
+    uint64_t vertex_bytes = (uint64_t)mesh->vertex_count * 3 * sizeof(mfloat_t);
+    wgpuRenderPassEncoderSetVertexBuffer(pass, 0, mesh->vertex_buffer, 0, vertex_bytes);
 
     if (mesh->index_count > 0) {
-        glDrawElements(GL_TRIANGLES, mesh->index_count, GL_UNSIGNED_SHORT, 0);
+        uint64_t index_bytes = (uint64_t)mesh->index_count * sizeof(uint16_t);
+        wgpuRenderPassEncoderSetIndexBuffer(pass, mesh->index_buffer, WGPUIndexFormat_Uint16, 0, index_bytes);
+        wgpuRenderPassEncoderDrawIndexed(pass, mesh->index_count, 1, 0, 0, 0);
     } else {
-        glDrawArrays(GL_TRIANGLES, 0, mesh->vertex_count);
+        wgpuRenderPassEncoderDraw(pass, mesh->vertex_count, 1, 0, 0);
     }
-
-    mesh_unbind();
 }

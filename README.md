@@ -1,13 +1,13 @@
 # shambhala
 
-Experimental OpenGL 3D playground in ANSI C
+Experimental WebGPU 3D playground in ANSI C
 
-This exists solely as a means for me to learn OpenGL (by following the [Learn OpenGL tutorial](https://learnopengl.com/) to spec) and 3D rendering overall, as well as a general collation of more fundamental computer science concepts, in particular memory management by using C (high level assembler) instead of C++ (a high level language).
+This exists solely as a means for me to learn 3D rendering (originally by following the [Learn OpenGL tutorial](https://learnopengl.com/) to spec, since ported to WebGPU) overall, as well as a general collation of more fundamental computer science concepts, in particular memory management by using C (high level assembler) instead of C++ (a high level language).
 
 Checklist of things I want to do of varying complexity, in no particular order:
 
-- [x] Get a basic GL app working (using SDL3)
-- [x] Abstract a basic OpenGL rendering engine
+- [x] Get a basic GPU app working (using SDL3)
+- [x] Abstract a basic WebGPU rendering engine
 - [x] Abstract a basic world data model
 - [x] Get a basic UI working
 - [ ] Get basic 3D rendering working
@@ -36,7 +36,7 @@ Currently, these are the only dependencies:
 
 - [mathc](https://github.com/felselva/mathc) for all 3D/2D math
 - [SDL3](https://libsdl.org/) (for window/input management)
-- [GLAD](https://gen.glad.sh/) (to point GL funcs)
+- [wgpu-native](https://github.com/gfx-rs/wgpu-native) (WebGPU implementation, exposes the plain-C `webgpu.h` API; fetched as a prebuilt library at build time, see `deps/wgpu-native/fetch.sh`)
 - [microui](https://github.com/rxi/microui) for all UI
 
 No plans to add any more external libraries in the future, as many only support C++.

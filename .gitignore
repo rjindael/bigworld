@@ -18,4 +18,10 @@ bin/
 
 # Build artifacts
 *.o
-shambala
+*.d
+shambhala
+
+# Fetched by `make` (see deps/wgpu-native/fetch.sh), not vendored in git
+deps/wgpu-native/include/
+deps/wgpu-native/lib/
+deps/wgpu-native/*.zip
